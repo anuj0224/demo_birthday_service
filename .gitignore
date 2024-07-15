@@ -1,0 +1,32 @@
+# Node.js files
+node_modules/
+.env
+
+# Build output
+build/
+dist/
+out/
+
+# Dependency lock files
+package-lock.json
+yarn.lock
+
+# Testing frameworks
+jest/
+
+# IDE and editor files
+.vscode/
+.idea/
+
+# Temporary files
+tmp/
+
+# Logs
+logs/
+
+# Coverage reports
+coverage/
+
+# Specific files or folders
+example.txt
+secret.js

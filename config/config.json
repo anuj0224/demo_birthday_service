@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "anuj@2002",
+    "database": "birthday_deploy",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "anuj@2002",
+    "database": "birthday_deploy",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "anuj@2002",
+    "database": "birthday_deploy",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
