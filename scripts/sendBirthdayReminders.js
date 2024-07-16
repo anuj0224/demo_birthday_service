@@ -10,6 +10,7 @@ const checkBirthdaysAndSendReminders = async () => {
     const todayDay = today.getDate();
     const todayMonth = today.getMonth() + 1; // Months are zero-indexed
 
+    // Find users with a birthday today
     const usersWithBirthdayToday = await User.findAll({
       where: {
         [Op.and]: [
@@ -19,15 +20,32 @@ const checkBirthdaysAndSendReminders = async () => {
       }
     });
 
-    usersWithBirthdayToday.forEach(async (user) => {
+    // Iterate over each user with a birthday
+    for (const user of usersWithBirthdayToday) {
+      // Send a happy birthday email to the user themselves
+      const birthdayMailOptions = {
+        from: process.env.EMAIL,
+        to: user.email,
+        subject: 'Happy Birthday!',
+        text: `Dear ${user.name},\n\nHappy Birthday! We hope you have a fantastic day filled with joy and celebration.\n\nBest wishes,\nYour Team`,
+      };
+
+      transporter.sendMail(birthdayMailOptions, (error, info) => {
+        if (error) {
+          console.error('Error sending birthday email to user:', error.message);
+        } else {
+          console.log(`Birthday email sent to ${user.name}`);
+        }
+      });
+
+      // Find all other users to send birthday reminders
       const usersExceptCurrent = await User.findAll({
         where: {
           id: { [Op.not]: user.id }
         }
       });
 
-      console.log('Reminder email sent to colleague:');
-
+      // Send reminder emails to colleagues
       usersExceptCurrent.forEach((colleague) => {
         const mailOptions = {
           from: process.env.EMAIL,
@@ -40,11 +58,11 @@ const checkBirthdaysAndSendReminders = async () => {
           if (error) {
             console.error('Error sending email:', error.message);
           } else {
-            console.log(colleague.name);
+            console.log(`Reminder email sent to ${colleague.name}`);
           }
         });
       });
-    });
+    }
 
     console.log('Birthday reminders processed successfully');
   } catch (error) {
@@ -52,10 +70,9 @@ const checkBirthdaysAndSendReminders = async () => {
   }
 };
 
-// Schedule the function to run daily at 9:00 AM
-cron.schedule('0 9 * * *', () => {
+// Schedule the function to run daily at 6:00 AM
+cron.schedule('0 6 * * *', () => {
   checkBirthdaysAndSendReminders();
 });
-
 
 module.exports = checkBirthdaysAndSendReminders;
