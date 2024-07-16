@@ -6,7 +6,7 @@ const app = express();
 
 // Example route
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('Hello World! this is birthday email sending nodejs application.......... ');
 });
 
 // Start the application

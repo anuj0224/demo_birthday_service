@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const { Op } = require('sequelize');
 const User = require('../models/user'); // Adjust path as per your project structure
-const { transporter } = require('../config/mailer');
+const transporter  = require('../config/mailer');
 const Sequelize = require('sequelize'); // Assuming you have a Sequelize instance configured
 
 const checkBirthdaysAndSendReminders = async () => {
@@ -10,7 +10,6 @@ const checkBirthdaysAndSendReminders = async () => {
     const todayDay = today.getDate();
     const todayMonth = today.getMonth() + 1; // Months are zero-indexed
 
-    // Find users with a birthday today
     const usersWithBirthdayToday = await User.findAll({
       where: {
         [Op.and]: [
@@ -20,49 +19,47 @@ const checkBirthdaysAndSendReminders = async () => {
       }
     });
 
-    // Iterate over each user with a birthday
-    for (const user of usersWithBirthdayToday) {
-      // Send a happy birthday email to the user themselves
+    usersWithBirthdayToday.forEach(async (user) => {
       const birthdayMailOptions = {
         from: process.env.EMAIL,
         to: user.email,
         subject: 'Happy Birthday!',
-        text: `Dear ${user.name},\n\nHappy Birthday! We hope you have a fantastic day filled with joy and celebration.\n\nBest wishes,\nYour Team`,
+        text: `Dear ${user.username},\n\nHappy Birthday! We hope you have a fantastic day filled with joy and celebration.\n\nBest wishes,\nYour Team`,
       };
 
       transporter.sendMail(birthdayMailOptions, (error, info) => {
         if (error) {
           console.error('Error sending birthday email to user:', error.message);
         } else {
-          console.log(`Birthday email sent to ${user.name}`);
+          console.log(`Birthday email sent to ${user.username}`);
         }
       });
 
-      // Find all other users to send birthday reminders
       const usersExceptCurrent = await User.findAll({
         where: {
           id: { [Op.not]: user.id }
         }
       });
 
-      // Send reminder emails to colleagues
+      console.log('Reminder email sent to colleague:');
+
       usersExceptCurrent.forEach((colleague) => {
         const mailOptions = {
           from: process.env.EMAIL,
           to: colleague.email,
           subject: 'Birthday Reminder',
-          text: `Dear ${colleague.name},\n\nToday is ${user.name}'s birthday! Don't forget to wish them a fantastic day.\n\nBest regards,\nYour Team`,
+          text: `Dear ${colleague.username},\n\nToday is ${user.username}'s birthday! Don't forget to wish them a fantastic day.\n\nBest regards,\nYour Team`,
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
             console.error('Error sending email:', error.message);
           } else {
-            console.log(`Reminder email sent to ${colleague.name}`);
+            console.log(colleague.username);
           }
         });
       });
-    }
+    });
 
     console.log('Birthday reminders processed successfully');
   } catch (error) {
@@ -74,5 +71,6 @@ const checkBirthdaysAndSendReminders = async () => {
 cron.schedule('0 6 * * *', () => {
   checkBirthdaysAndSendReminders();
 });
+
 
 module.exports = checkBirthdaysAndSendReminders;
