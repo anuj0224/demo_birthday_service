@@ -16,7 +16,7 @@ const sequelize = new Sequelize(database, username, password, {
 
 // Example route
 app.get('/', (req, res) => {
-  res.send('Hello World! This is a birthday email sending Node.js application.');
+  res.send('Hello World! this is birthday email sending nodejs application.......... ');
 });
 
 // Start the application
