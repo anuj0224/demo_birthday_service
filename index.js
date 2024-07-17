@@ -21,10 +21,7 @@ app.get('/', (req, res) => {
 });
 
 // Start the application
-const port = process.env.PORT || 6000;
-app.listen(port, async () => {
-  console.log(`Server is running on http://localhost:${port}`);
-
+async function startApp() {
   try {
     // Test the database connection
     await sequelize.authenticate();
@@ -40,9 +37,17 @@ app.listen(port, async () => {
 
     // Run script for sending birthday reminders
     checkBirthdaysAndSendReminders();
+
+    // Start the Express server
+    const port = process.env.PORT || 6000;
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
   } catch (error) {
     // If database connection or synchronization fails
     console.error('Unable to connect to the database:', error);
-
+    process.exit(1);
   }
-});
+}
+
+startApp();

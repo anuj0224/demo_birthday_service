@@ -22,13 +22,13 @@ const seedDatabase = async () => {
     const users = [
         {
           username: 'admin',
-          email: 'admin@example.com',
+          email: 'mouryaanuj2002@gmail.com',
           dob: '1990-01-01', // Example date of birth
         },
         {
           username: 'john_doe',
-          email: 'john.doe@example.com',
-          dob: '1985-05-15', // Example date of birth
+          email: 'kanv@etaipl.in',
+          dob: '1985-07-17', // Example date of birth
         },
         {
           username: 'jane_smith',
