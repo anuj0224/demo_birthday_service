@@ -39,23 +39,5 @@ app.listen(port, async () => {
     // If database connection or synchronization fails
     console.error('Unable to connect to the database:', error);
 
-    // Attempt to create the database if it doesn't exist
-    try {
-      await sequelize.query(`CREATE DATABASE IF NOT EXISTS ${database}`);
-      console.log(`Database '${database}' created successfully.`);
-      
-      // Retry database connection after creating it
-      await sequelize.authenticate();
-      console.log('Database connection has been established successfully after creation.');
-
-      // Synchronize models after successful connection
-      await sequelize.sync({ alter: true });
-      console.log('All models were synchronized successfully after creation.');
-
-      // Run script for sending birthday reminders
-      checkBirthdaysAndSendReminders();
-    } catch (createError) {
-      console.error('Unable to create database or connect:', createError);
-    }
   }
 });
