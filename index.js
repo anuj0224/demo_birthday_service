@@ -3,6 +3,7 @@ const express = require('express');
 const checkBirthdaysAndSendReminders = require('./scripts/sendBirthdayReminders');
 const Sequelize = require('sequelize');
 const config = require('./config/config.json');
+const seedDatabase = require('./seeders/seed');
 const app = express();
 
 // Extract database configuration from config.json
@@ -32,6 +33,10 @@ app.listen(port, async () => {
     // Ensure Sequelize has synchronized all models with the database
     await sequelize.sync({ alter: true });
     console.log('All models were synchronized successfully.');
+
+    // Seed the database
+    await seedDatabase();
+    console.log('Database seeding completed.');
 
     // Run script for sending birthday reminders
     checkBirthdaysAndSendReminders();
