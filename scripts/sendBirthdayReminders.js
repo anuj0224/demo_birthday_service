@@ -48,14 +48,14 @@ const checkBirthdaysAndSendReminders = async () => {
           from: process.env.EMAIL,
           to: colleague.email,
           subject: 'Birthday Reminder',
-          text: `Dear ${colleague.username},\n\nToday is ${user.username}'s birthday! Don't forget to wish them a fantastic day.\n\nBest regards,\nYour Team`,
+          text: `Dear ${colleague.name},\n\nToday is ${user.name}'s birthday! Don't forget to wish them a fantastic day.\n\nBest regards,\nYour Team`,
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
             console.error('Error sending email:', error.message);
           } else {
-            console.log(colleague.username);
+            console.log(colleague.name);
           }
         });
       });

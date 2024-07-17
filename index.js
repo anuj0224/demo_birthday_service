@@ -1,9 +1,10 @@
 // index.js
 const express = require('express');
+const userRoutes = require('./routes/user.routes')
 const checkBirthdaysAndSendReminders = require('./scripts/sendBirthdayReminders');
 const Sequelize = require('sequelize');
 const config = require('./config/config.json');
-const seedDatabase = require('./seeders/seed');
+// const seedDatabase = require('./seeders/seed');
 const app = express();
 
 // Extract database configuration from config.json
@@ -20,6 +21,8 @@ app.get('/', (req, res) => {
   res.send('Hello World! this is birthday email sending nodejs application.......... ');
 });
 
+app.use('/api/users', userRoutes);
+
 // Start the application
 async function startApp() {
   try {
@@ -32,8 +35,8 @@ async function startApp() {
     console.log('All models were synchronized successfully.');
 
     // Seed the database
-    await seedDatabase();
-    console.log('Database seeding completed.');
+    // await seedDatabase();
+    // console.log('Database seeding completed.');
 
     // Run script for sending birthday reminders
     checkBirthdaysAndSendReminders();

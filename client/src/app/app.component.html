@@ -1,0 +1,17 @@
+<table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Date of Birth</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employee of employeeArray">
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.email }}</td>
+        <td>{{ employee.dob | date }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
