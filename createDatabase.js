@@ -5,7 +5,7 @@ const config = require('./config/config.json');
 const { database, username, password, host, dialect } = config.development;
 
 async function createDatabase() {
-  const sequelize = new Sequelize('', username, password, {
+  const sequelize = new Sequelize(database, username, password, {
     host: host,
     dialect: dialect,
     logging: false,

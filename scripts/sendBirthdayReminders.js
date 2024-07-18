@@ -24,14 +24,14 @@ const checkBirthdaysAndSendReminders = async () => {
         from: process.env.EMAIL,
         to: user.email,
         subject: 'Happy Birthday!',
-        text: `Dear ${user.username},\n\nHappy Birthday! We hope you have a fantastic day filled with joy and celebration.\n\nBest wishes,\nYour Team`,
+        text: `Dear ${user.name},\n\nHappy Birthday! We hope you have a fantastic day filled with joy and celebration.\n\nBest wishes,\nYour Team`,
       };
 
       transporter.sendMail(birthdayMailOptions, (error, info) => {
         if (error) {
           console.error('Error sending birthday email to user:', error.message);
         } else {
-          console.log(`Birthday email sent to ${user.username}`);
+          console.log(`Birthday email sent to ${user.name}`);
         }
       });
 

@@ -4,6 +4,7 @@ const userRoutes = require('./routes/user.routes')
 const checkBirthdaysAndSendReminders = require('./scripts/sendBirthdayReminders');
 const Sequelize = require('sequelize');
 const config = require('./config/config.json');
+const cors = require('cors');
 // const seedDatabase = require('./seeders/seed');
 const app = express();
 
@@ -15,6 +16,14 @@ const sequelize = new Sequelize(database, username, password, {
   host: host,
   dialect: dialect,
 });
+
+// Configure CORS middleware
+app.use(cors({
+  origin: 'http://localhost:4200', // Allow only this origin
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  allowedHeaders: 'Content-Type, Authorization'
+}));
 
 // Example route
 app.get('/', (req, res) => {
